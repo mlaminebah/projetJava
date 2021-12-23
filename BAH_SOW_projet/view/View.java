@@ -5,6 +5,7 @@ import controller.KeyEventHandler;
 import controller.MenuItemEventHandler;
 import model.ModelTodoList;
 import model.Task;
+import model.Observable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,7 +22,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class View /* TODO */ {
+//Question 3
+public class View  implements Observer/* TODO */ {
 
 	// fenêtre principale
 	private Stage stage;
@@ -167,7 +169,27 @@ public class View /* TODO */ {
 	}
 
 	// Mise à jour du contenu de la fenêtre principale
-	public void update(ModelTodoList model) {
+	/*public void update(ModelTodoList model) {
+		proceeds_btn.setText("Traiter une tâche (reste " + model.size() + ")");
+		if (model.size() == 0)
+			proceeds_btn.setDisable(true);
+		else
+			proceeds_btn.setDisable(false);
+		todo_ta.clear();
+		for (Task task : model.getTasks()) {
+			todo_ta.appendText(task.toString() + "\n");
+		}
+		menuButton.setText(model.getPriority().getText());
+	}*/
+
+	// Cache la fenêtre dialogue
+	public void hideModalWindow() {
+		dialog.hide();
+	}
+
+	@Override
+	public void update (Observable observable) {
+		ModelTodoList model = (ModelTodoList) observable;
 		proceeds_btn.setText("Traiter une tâche (reste " + model.size() + ")");
 		if (model.size() == 0)
 			proceeds_btn.setDisable(true);
@@ -179,10 +201,4 @@ public class View /* TODO */ {
 		}
 		menuButton.setText(model.getPriority().getText());
 	}
-
-	// Cache la fenêtre dialogue
-	public void hideModalWindow() {
-		dialog.hide();
-	}
-
 }

@@ -2,8 +2,12 @@ package model;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.ArrayList;
+import java.util.List;
+import view.Observer;
 
-public class ModelTodoList implements TodoList/* TODO */ {
+//Question 3
+public class ModelTodoList implements TodoList,Observable/* TODO */ {
 
 	// Liste de priorité de tâches
 	private PriorityQueue<Task> tasks;
@@ -17,8 +21,11 @@ public class ModelTodoList implements TodoList/* TODO */ {
 	// La tâche actuellement réalisée (null si aucune)
 	private Task currentTask;
 
+	//Question 3
+	private List<Observer> observers;
+
 	// TODO
-	//private int numTask;
+	private int numTask;
 
 	/*
 	 * Constructeur du modèle
@@ -31,16 +38,15 @@ public class ModelTodoList implements TodoList/* TODO */ {
 			@Override
 			public int compare(Task task1, Task task2) {
                 //Question 2) 
-                if (task1.getPriorities().getValue() == task2.getPriorities().getValue()) {
-                    
-                    return task1.getNum() - task2.getNum ();
-                }
-				return task1.getPriorities().getValue() - task2.getPriorities().getValue();
-                
+                if (task1.getPriorities().getValue() < task2.getPriorities().getValue()) return -1;
+				else if (task1.getPriorities().getValue() > task2.getPriorities().getValue()) return 1;
+				return 0;
 			}
 		});
+		//tasks = new PriorityQueue<Task>(31);
 		priority = Priorities.MEDIUM;
-		
+		//Question 3 .
+		observers = new ArrayList<>();
 	}
 
 	/*
@@ -70,13 +76,22 @@ public class ModelTodoList implements TodoList/* TODO */ {
 	 * Ajoute la tâche en cours d'édition à la liste des tâches à faire
 	 */
 	private void push(Task task) /* TODO */ {
+		
+		//System.out.println ("iiicii "+task.getNum());*/
 		tasks.add(task);
 		// TODO
+		//this.notifyAllObservers();
 	}
 	public void push() /* TODO */ {
 		// TODO
 		push(new Task(getDescription(), priority));
 		System.out.println("Model: push(): " + size());
+		/*if (tasks != null) {
+			this.numTask = tasks.peek().getNum();
+			System.out.println ("ajout");
+		}*/
+		//Question 3
+		this.notifyAllObservers();
 	}
 
 	/*
@@ -87,6 +102,7 @@ public class ModelTodoList implements TodoList/* TODO */ {
 	public void pop() {
 		System.out.println("Model: pop(): " + this);
 		currentTask = tasks.poll();
+		this.notifyAllObservers();
 	}
 
 	/*
@@ -124,5 +140,16 @@ public class ModelTodoList implements TodoList/* TODO */ {
 	 */
 	public String getDescription() {
 		return description;
+	}
+	//Pour la question 3
+	@Override
+	public void notifyAllObservers () {
+		for (Observer obs: observers) {
+			obs.update(this);
+		}
+	}
+	@Override
+    public void addObserver (Observer p) {
+		observers.add(p);
 	}
 }

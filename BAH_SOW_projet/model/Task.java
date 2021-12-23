@@ -5,7 +5,7 @@ import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 /*
  * Tâche
  */
-public class Task {
+public class Task  {
 
 	// TODO : Q1.1) et Q2.2) 
 	private static Integer num = 0;
@@ -47,4 +47,18 @@ public class Task {
     public int getNum () {
         return this.num;
     }
+	/*@Override
+	public int compareTo (Task task) {
+		if (this.getPriorities().getValue() < task.getPriorities().getValue()) return 1;
+		else if (this.getPriorities().getValue() > task.getPriorities().getValue()) return -1;
+		else return 1;
+	}
+	@Override
+	public boolean equals (Object other) {
+		if (other instanceof Task) {
+			Task task = (Task) other;
+			return task.getPriorities().getValue() == this.getPriorities().getValue();
+		}
+		return false;
+	}*/
 }

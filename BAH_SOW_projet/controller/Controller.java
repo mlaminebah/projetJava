@@ -30,6 +30,8 @@ public class Controller {
 		menuItemEventHandler.setView(view);
 		view.update(model);
 		view.show();
+		//question 3
+		model.addObserver(view);
 	}
 
 	public View getView() {
